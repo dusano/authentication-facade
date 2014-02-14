@@ -9,22 +9,32 @@ from django.contrib.auth.decorators import login_required
 from facade.models import Mapping
 
 
+HEADERS_TO_PASS = [
+		'content-type',
+	]
+
 def _fetch_target(request, target_url):
 	http_client = httplib2.Http()
 	
 	if request.GET:
 		target_url += '?' + urlencode(request.GET)
-		
-	response, content = http_client.request(target_url, method="GET")
-
+	
+	target_response, content = http_client.request(target_url, method="GET")
+	
 	for mapping in Mapping.objects.all():
 		replacement_url= request.build_absolute_uri(reverse('facade.views.bridge', args=(mapping.plug,)))
 		content = content.replace(mapping.target_url, replacement_url)
 	
-	return http.HttpResponse(
-		content,
-		status=response.status
-	)
+	response = http.HttpResponse(
+			content,
+			status=target_response.status
+		)
+
+	for header in HEADERS_TO_PASS:
+		if header in target_response:
+			response[header] = target_response[header]
+	
+	return response
 	
 
 @login_required
