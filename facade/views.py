@@ -1,15 +1,20 @@
 import httplib2
 
 from django import http
+from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from facade.models import Mapping
 
 
-def _fetch_target(target_url):
+def _fetch_target(request, target_url):
 	http_client = httplib2.Http()
 	response, content = http_client.request(target_url, method="GET")
+
+	for mapping in Mapping.objects.all():
+		replacement_url= request.build_absolute_uri(reverse('facade.views.bridge', args=(mapping.plug,)))
+		content = content.replace(mapping.target_url, replacement_url)
 	
 	return http.HttpResponse(
 		content,
@@ -25,4 +30,4 @@ def bridge(request, target):
 	except Mapping.DoesNotExist:
 		raise http.Http404
 	
-	return _fetch_target(mapping.target_url)
+	return _fetch_target(request, mapping.target_url)
