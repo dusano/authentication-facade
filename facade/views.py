@@ -1,3 +1,4 @@
+from urllib import urlencode
 import httplib2
 
 from django import http
@@ -10,6 +11,10 @@ from facade.models import Mapping
 
 def _fetch_target(request, target_url):
 	http_client = httplib2.Http()
+	
+	if request.GET:
+		target_url += '?' + urlencode(request.GET)
+		
 	response, content = http_client.request(target_url, method="GET")
 
 	for mapping in Mapping.objects.all():
