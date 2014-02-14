@@ -19,10 +19,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '3mtj0zticpz4h^r!y2qwu!*7b8_#=ovs*&@5*evoht)6znbanw'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = True
+
+GOOGLE_OAUTH = True
 
 ALLOWED_HOSTS = []
 
@@ -36,6 +37,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    'gauth',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -74,3 +77,8 @@ try:
 	from localsettings import *
 except:
 	raise Exception("Failed to load localsettings.py. Please use localsettings.py.sample for template.")
+
+if GOOGLE_OAUTH:
+	AUTHENTICATION_BACKENDS = (
+		'gauth.backend.GoogleOauthBackend',
+	)
