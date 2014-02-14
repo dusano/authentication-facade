@@ -21,9 +21,10 @@ def _fetch_target(request, target_url):
 	
 	target_response, content = http_client.request(target_url, method="GET")
 	
-	for mapping in Mapping.objects.all():
-		replacement_url= request.build_absolute_uri(reverse('facade.views.bridge', args=(mapping.plug,)))
-		content = content.replace(mapping.target_url, replacement_url)
+	if ('content-type' in target_response) and target_response['content-type'].startswith('text/html'):
+		for mapping in Mapping.objects.all():
+			replacement_url= request.build_absolute_uri(reverse('facade.views.bridge', args=(mapping.plug,)))
+			content = content.replace(mapping.target_url, replacement_url)
 	
 	response = http.HttpResponse(
 			content,
