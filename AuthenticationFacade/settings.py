@@ -27,6 +27,10 @@ GOOGLE_OAUTH = True
 
 ALLOWED_HOSTS = []
 
+TEMPLATE_LOADERS = (
+	'django.template.loaders.filesystem.Loader',
+	'django.template.loaders.app_directories.Loader',
+)
 
 # Application definition
 
@@ -41,6 +45,7 @@ INSTALLED_APPS = (
     'gauth',
     
     'facade',
+    'dashboard',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -1,0 +1,12 @@
+<html>
+<body>
+<ul>
+{% for group, mappings in groups_and_mappings.items %}
+<b>{{ group }}</b>
+{% for mapping in mappings %}
+<li><a href="/b/{{ mapping.plug }}">{{ mapping.plug }}</a></li>
+{% endfor %}
+{% endfor %}
+</ul>
+</body>
+</html>

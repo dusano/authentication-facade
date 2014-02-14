@@ -3,6 +3,6 @@ from facade.models import Mapping
 
 
 class MappingAdmin(admin.ModelAdmin):
-    list_display = ('plug', 'target_url')
+    list_display = ('plug', 'target_url', 'index_page', 'group')
 
 admin.site.register(Mapping, MappingAdmin)

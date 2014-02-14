@@ -12,6 +12,8 @@ if settings.GOOGLE_OAUTH:
 urlpatterns = patterns('',
     
     url(r'^admin/', include(admin.site.urls)),
+    
+    url(r'^$', 'dashboard.views.index'),
 	
 	url(r'^accounts/login/$', 'gauth.views.login_page', name='gauth.login'),
 	url(r'^accounts/google_callback/$', 'gauth.views.google_callback', name='gauth.google_callback'),
