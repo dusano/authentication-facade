@@ -1,3 +1,5 @@
+localsettings.py
+
 *.py[cod]
 
 # C extensions
