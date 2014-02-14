@@ -39,6 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     
     'gauth',
+    
+    'facade',
 )
 
 MIDDLEWARE_CLASSES = (
