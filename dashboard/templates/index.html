@@ -1,10 +1,29 @@
 <html>
+<head>
+    <title>Screens</title>
+    {% load staticfiles %}
+<style>
+    li {list-style: none; display: inline-block; text-align: center;margin: 3; }
+    li:hover {background: #2c3e50; }
+    img {display: block; margin: 0 auto; }
+    body {background: #34495e; }
+    a:link {color:#2980b9;}
+    a:visited {color: #2980b9;}
+    a:hover {font-weight:bold;}
+</style>
+</head>
 <body>
-<ul>
+
 {% for group, mappings in groups_and_mappings.items %}
-<b>{{ group }}</b>
+<h1>{{ group }}</h1>
+<ul>
 {% for mapping in mappings %}
-<li><a href="/b/{{ mapping.plug }}">{{ mapping.plug }}</a></li>
+<li>
+    <a href="/b/{{ mapping.plug }}">
+        <img src="/static/dashboard/{{ mapping.plug }}.png" />
+        {{ mapping.plug }}
+    </a>
+</li>
 {% endfor %}
 {% endfor %}
 </ul>
