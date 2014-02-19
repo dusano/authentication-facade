@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from facade.models import Mapping
 
 
-#@login_required
+@login_required
 def index(request):
 
 	mappings = Mapping.objects.filter(index_page=True)

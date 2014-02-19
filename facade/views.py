@@ -38,7 +38,7 @@ def _fetch_target(request, target_url):
 	return response
 
 
-#@login_required
+@login_required
 def bridge(request, target):
 
 	try:
