@@ -1,4 +1,6 @@
+import re
 from urllib import urlencode
+import urlparse
 import httplib2
 
 from django import http
@@ -15,11 +17,24 @@ HEADERS_TO_PASS = [
 
 def _fetch_target(request, target_url):
 	http_client = httplib2.Http(disable_ssl_certificate_validation=True)
-
+	
+	parsed_target_url = list(urlparse.urlparse(target_url))
+	
+	basic_auth = re.match('^(.*):(.*)@(.*)$', parsed_target_url[1])
+	
+	if basic_auth and basic_auth.groups:
+		http_client.add_credentials(basic_auth.group(1), basic_auth.group(2))
+		parsed_target_url[1] = basic_auth.group(3)
+	
 	if request.GET:
-		target_url += '?' + urlencode(request.GET)
-
-	target_response, content = http_client.request(target_url, method="GET")
+		if parsed_target_url[4]:
+			parsed_target_url[4] += '&'
+		
+		parsed_target_url[4] += urlencode(request.GET)
+		
+	fetch_url = urlparse.urlunparse(parsed_target_url)
+	
+	target_response, content = http_client.request(fetch_url, method="GET")
 
 	if ('content-type' in target_response) and target_response['content-type'].startswith('text/html'):
 		for mapping in Mapping.objects.all():
