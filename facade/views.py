@@ -2,6 +2,7 @@ import re
 from urllib import urlencode
 import urlparse
 import httplib2
+import logging
 
 from django import http
 from django.core.urlresolvers import reverse
@@ -10,6 +11,8 @@ from django.contrib.auth.decorators import login_required
 
 from facade.models import Mapping
 
+
+logger = logging.getLogger(__name__)
 
 HEADERS_TO_PASS = [
 		'content-type',
@@ -33,6 +36,8 @@ def _fetch_target(request, target_url):
 		parsed_target_url[4] += urlencode(request.GET)
 		
 	fetch_url = urlparse.urlunparse(parsed_target_url)
+	
+	logger.info('Fetching URL %s' % fetch_url)
 	
 	target_response, content = http_client.request(fetch_url, method="GET")
 
